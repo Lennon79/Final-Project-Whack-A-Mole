@@ -25,9 +25,19 @@ def draw_holes(screen, x, y):
     pygame.draw.ellipse(screen, BLACK, [x+100, y+150, 150, 50], )
     pygame.draw.ellipse(screen, BLACK, [x+300, y+150, 150, 50], )
 
+
 player = pygame.Rect (10,10, 5, 15)
 player_image = pygame.image.load("hammer2.png")
 playerStretchedImage = pygame.transform.scale(player_image, (5, 5))
+mole = pygame.Rect (3,3,2,1)
+mole_Image = pygame.image.load("mole3.png")
+moleStretchedImage = pygame.transform.scale(mole_Image, (1,1))
+
+
+'''moles = []
+for i in range(5):'''
+
+
 
 #pygame.mixer.music.play(-1,0.0)
 #click_sound = pygame.mixer.Sound("laser5.ogg")
@@ -76,6 +86,8 @@ while not done:
 
     # Copy image to screen:
     screen.blit(player_image, [x, y]) #blit moles
+    screen.blit(mole_Image,[100,10])
+
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
