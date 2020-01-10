@@ -35,10 +35,12 @@ moleStretchedImage = pygame.transform.scale(mole_Image, (1,1))
 
 moles = [[80, 260], [280, 260], [480, 260],[180,310],[380, 310]]
 for i in range(5):
+    random_moles = (random.choice(moles))
+    print(str(random_moles))
 
-    #blit mole_Image at random coordinate in moles list
-    mole = random.randrange(len(moles))
-    print(mole)
+#blit mole_Image at random coordinate in moles list
+    #mole = random.randrange(len(moles))
+    #print(mole)
 
 
 
@@ -90,7 +92,8 @@ while not done:
 
     # Copy image to screen:
     screen.blit(player_image, [x, y])
-    screen.blit(mole_Image,[100,210])#blit moles
+    screen.blit(mole_Image,random_moles)#blit moles
+
 
 
     # --- Go ahead and update the screen with what we've drawn.
