@@ -29,18 +29,26 @@ def draw_holes(screen, x, y):
 player = pygame.Rect (10,10, 5, 15)
 player_image = pygame.image.load("hammer2.png")
 playerStretchedImage = pygame.transform.scale(player_image, (5, 5))
-mole_rect = pygame.Rect (3,3,2,1)
+mole_rect = pygame.Rect (3,3,100,143)
 mole_Image = pygame.image.load("mole3.png")
 moleStretchedImage = pygame.transform.scale(mole_Image, (1,1))
 
 moles = [[80, 260], [280, 260], [480, 260],[180,310],[380, 310]]
 for i in range(5):
-    random_moles = (random.choice(moles))
-    print(str(random_moles))
+
+
+
+    mole = random.randrange(len(moles))
+    print(mole)
 
 #blit mole_Image at random coordinate in moles list
-    #mole = random.randrange(len(moles))
-    #print(mole)
+#mole collison with hammer(draw hammer over mole)
+#moles and game on timer
+#add points when mole is hit
+#add music and sfx
+#add op screen
+
+
 
 
 
@@ -92,7 +100,8 @@ while not done:
 
     # Copy image to screen:
     screen.blit(player_image, [x, y])
-    screen.blit(mole_Image,random_moles)#blit moles
+
+    screen.blit(mole_Image,[])#blit moles
 
 
 
