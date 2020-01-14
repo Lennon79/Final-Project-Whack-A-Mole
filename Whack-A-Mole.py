@@ -18,43 +18,44 @@ screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("Whack-A-Mole")
 
-def draw_holes(screen, x, y):
+'''def draw_holes(screen, x, y):
     pygame.draw.ellipse(screen, BLACK, [x, y, 150, 50], )
     pygame.draw.ellipse(screen, BLACK, [x+200, y, 150, 50], )
     pygame.draw.ellipse(screen, BLACK, [x+400, y, 150, 50], )
     pygame.draw.ellipse(screen, BLACK, [x+100, y+150, 150, 50], )
     pygame.draw.ellipse(screen, BLACK, [x+300, y+150, 150, 50], )
+    [80, 260], [280, 260], [480, 260],[180,310],[380, 310]'''
 
 
+
+mole= pygame.Rect (3,3,100,143)
+mole_Image = pygame.image.load("mole3.png")
+moleStretchedImage = pygame.transform.scale(mole_Image, (1,1))
 player = pygame.Rect (10,10, 5, 15)
 player_image = pygame.image.load("hammer2.png")
 playerStretchedImage = pygame.transform.scale(player_image, (5, 5))
-mole_rect = pygame.Rect (3,3,100,143)
-mole_Image = pygame.image.load("mole3.png")
-moleStretchedImage = pygame.transform.scale(mole_Image, (1,1))
+#pygame.mixer.music.play(-1,0.0)
+#hit_sound = pygame.mixer.Sound(" ")
 
-moles = [[80, 260], [280, 260], [480, 260],[180,310],[380, 310]]
+
+
+moles = []
 for i in range(5):
+    moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
+    #mole = random.randrange(len(moles))
+    #print(mole)
 
 
 
-    mole = random.randrange(len(moles))
-    print(mole)
-
-#blit mole_Image at random coordinate in moles list
-#mole collison with hammer(draw hammer over mole)
+#mole collison with hammer(when moles are clicked they disappear)
+#add music and sfx
 #moles and game on timer
 #add points when mole is hit
-#add music and sfx
 #add op screen
 
 
 
 
-
-
-#pygame.mixer.music.play(-1,0.0)
-#click_sound = pygame.mixer.Sound("laser5.ogg")
 
 # Loop until the user clicks the close button.
 done = False
@@ -69,8 +70,10 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
             sys.exit()
-            #elif event.type == pygame.MOUSEBUTTONDOWN:
+        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            #if mole.collidepoint(player_position):
                 #click_sound.play() make a noise when mole is hit
+        #https://stackoverflow.com/questions/12150957/pygame-action-when-mouse-click-on-rect
 
 
     # --- Game logic should go here
@@ -82,11 +85,10 @@ while not done:
 
     # If you want a background image, replace this clear with blit'ing the
     # background image.
-    screen.fill(BLUE)
+    screen.fill(GREEN)
 
     # --- Drawing code should go here
-    pygame.draw.rect(screen, GREEN, [0, 250, 700, 250], 0)
-    draw_holes(screen, 80, 260)
+
 
     player_position = pygame.mouse.get_pos()
     x = player_position[0]
@@ -99,9 +101,15 @@ while not done:
         y = 350
 
     # Copy image to screen:
+    for mole in moles:
+        screen.blit(mole_Image, mole)
+
     screen.blit(player_image, [x, y])
 
-    screen.blit(mole_Image,[])#blit moles
+    #screen.blit(mole_Image,[mole])#blit moles
+    for mole in moles[:]:
+       if mole.collidepoint(player_position):
+           moles.remove(mole)
 
 
 
