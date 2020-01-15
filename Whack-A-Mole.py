@@ -1,8 +1,6 @@
 #Lennon Hudson
 import pygame,random,sys
 
-#import sys
-
 # Define some colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -28,29 +26,40 @@ pygame.display.set_caption("Whack-A-Mole")
 
 
 
-mole= pygame.Rect (3,3,100,143)
+mole= pygame.Rect (10,10,100,143)
 mole_Image = pygame.image.load("mole3.png")
-moleStretchedImage = pygame.transform.scale(mole_Image, (1,1))
-player = pygame.Rect (10,10, 5, 15)
+player = pygame.Rect (10,10, 172, 238)
 player_image = pygame.image.load("hammer2.png")
-playerStretchedImage = pygame.transform.scale(player_image, (5, 5))
 #pygame.mixer.music.play(-1,0.0)
-#hit_sound = pygame.mixer.Sound(" ")
+#click_sound = pygame.mixer.Sound(" ")
 
-
+hit_zone = pygame.Rect(0 ,0, 35, 80)
 
 moles = []
+mole_number = 0
 for i in range(5):
     moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
+    mole_number += 1
+    print(mole_number)
     #mole = random.randrange(len(moles))
     #print(mole)
 
+moleCounter = 0
+NEWMOLES = 60
+NEWMOLES2 = 30
+player_score = 0
+def terminate():
+   pygame.quit()
+   sys.exit()
 
 
+#redraw moles, pick bkgrd music and hit sfx(hammer sound, molle reaction sound[in collison])
 #mole collison with hammer(when moles are clicked they disappear)
-#add music and sfx
 #moles and game on timer
-#add points when mole is hit
+#make sure moles don't draw on eachother
+#add points when mole is hit(on screen)
+#take away points when mole is missed
+#when player has x number of points draw more moles faster
 #add op screen
 
 
@@ -68,15 +77,28 @@ while not done:
     # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            done = True
-            sys.exit()
+            terminate()
+        if event.type == pygame.KEYDOWN:
+            if event.key == K_ESCAPE:
+                terminate()
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            #if mole.collidepoint(player_position):
                 #click_sound.play() make a noise when mole is hit
         #https://stackoverflow.com/questions/12150957/pygame-action-when-mouse-click-on-rect
 
 
     # --- Game logic should go here
+    moleCounter +=1
+    if moleCounter >= NEWMOLES:
+        moleCounter = 0
+        moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
+        mole_number += 1
+        print(mole_number)
+        '''if player_score == 30:
+            if moleCounter >= NEWMOLES2:
+                moleCounter = 0
+                moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
+                mole_number += 1
+                print(mole_number)'''
 
     # --- Screen-clearing code goes here
 
@@ -93,6 +115,9 @@ while not done:
     player_position = pygame.mouse.get_pos()
     x = player_position[0]
     y = player_position[1]
+    hit_zone.x = x
+    hit_zone.y = y + 65
+
     pygame.mouse.set_visible(0)
     if x > 550:
         x = 550
@@ -106,10 +131,15 @@ while not done:
 
     screen.blit(player_image, [x, y])
 
-    #screen.blit(mole_Image,[mole])#blit moles
-    for mole in moles[:]:
-       if mole.collidepoint(player_position):
+
+
+    for mole in moles:
+       if mole.colliderect(hit_zone) and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
            moles.remove(mole)
+           mole_number = mole_number -1
+           player_score +=1
+           print(mole_number)
+           print("Player score: ", player_score)#move to events
 
 
 
