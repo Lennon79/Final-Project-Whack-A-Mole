@@ -1,5 +1,7 @@
 #Lennon Hudson
-import pygame,random,sys
+import pygame,random,sys,time
+from pygame.locals import *
+
 
 # Define some colors
 BLACK = (0, 0, 0)
@@ -16,15 +18,7 @@ screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("Whack-A-Mole")
 
-'''def draw_holes(screen, x, y):
-    pygame.draw.ellipse(screen, BLACK, [x, y, 150, 50], )
-    pygame.draw.ellipse(screen, BLACK, [x+200, y, 150, 50], )
-    pygame.draw.ellipse(screen, BLACK, [x+400, y, 150, 50], )
-    pygame.draw.ellipse(screen, BLACK, [x+100, y+150, 150, 50], )
-    pygame.draw.ellipse(screen, BLACK, [x+300, y+150, 150, 50], )
-    [80, 260], [280, 260], [480, 260],[180,310],[380, 310]'''
-
-
+#pygame.time.get_ticks() figure out timer
 
 mole= pygame.Rect (10,10,100,143)
 mole_Image = pygame.image.load("mole3.png")
@@ -41,8 +35,7 @@ for i in range(5):
     moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
     mole_number += 1
     print(mole_number)
-    #mole = random.randrange(len(moles))
-    #print(mole)
+
 
 moleCounter = 0
 NEWMOLES = 60
@@ -53,15 +46,15 @@ def terminate():
    sys.exit()
 
 
-#redraw moles, pick bkgrd music and hit sfx(hammer sound, molle reaction sound[in collison])
-#mole collison with hammer(when moles are clicked they disappear)
-#moles and game on timer
-#make sure moles don't draw on eachother
-#add points when mole is hit(on screen)
-#take away points when mole is missed
-#when player has x number of points draw more moles faster
-#add op screen
 
+
+#redraw moles, pick bkgrd music and hit sfx(hammer sound, molle reaction sound[in collison])
+#add op screen
+#timer on screen
+#when player has x number of points draw more moles faster
+#moles and game on timer
+#take away points when mole is missed
+#make sure moles don't draw on eachother
 
 
 
@@ -81,8 +74,15 @@ while not done:
         if event.type == pygame.KEYDOWN:
             if event.key == K_ESCAPE:
                 terminate()
-        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                #click_sound.play() make a noise when mole is hit
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            for mole in moles:
+                if mole.colliderect(hit_zone):
+                    # click_sound.play() make a noise when mole is hit
+                    moles.remove(mole)
+                    mole_number = mole_number - 1
+                    player_score += 1
+                    print(mole_number)
+                    print("Player score: ", player_score)
         #https://stackoverflow.com/questions/12150957/pygame-action-when-mouse-click-on-rect
 
 
@@ -93,12 +93,8 @@ while not done:
         moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
         mole_number += 1
         print(mole_number)
-        '''if player_score == 30:
-            if moleCounter >= NEWMOLES2:
-                moleCounter = 0
-                moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
-                mole_number += 1
-                print(mole_number)'''
+
+
 
     # --- Screen-clearing code goes here
 
@@ -111,7 +107,15 @@ while not done:
 
     # --- Drawing code should go here
 
+    #drawing score on screen
+    fontObj = pygame.font.Font('freesansbold.ttf', 32)
+    textSurfaceObj = fontObj.render("Score:" + str(player_score), True, BLACK)
+    textRectObj = textSurfaceObj.get_rect()
+    textRectObj.center = (65, 32)
 
+    #drawing time on screen
+
+    #getting player position and hit zone
     player_position = pygame.mouse.get_pos()
     x = player_position[0]
     y = player_position[1]
@@ -125,21 +129,13 @@ while not done:
     if y > 350:
         y = 350
 
-    # Copy image to screen:
+    # bliting images to screen:
     for mole in moles:
         screen.blit(mole_Image, mole)
 
     screen.blit(player_image, [x, y])
 
-
-
-    for mole in moles:
-       if mole.colliderect(hit_zone) and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-           moles.remove(mole)
-           mole_number = mole_number -1
-           player_score +=1
-           print(mole_number)
-           print("Player score: ", player_score)#move to events
+    screen.blit(textSurfaceObj, textRectObj)
 
 
 
