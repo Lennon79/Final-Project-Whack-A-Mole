@@ -44,6 +44,14 @@ player_score = 0
 def terminate():
    pygame.quit()
    sys.exit()
+def timer(n):
+    while n > 0:
+        n = n - 1
+        print("Timer:",n)
+        time.sleep(1)
+    if n == 0:
+        print("done")
+        terminate()
 
 
 
@@ -51,9 +59,8 @@ def terminate():
 #redraw moles, pick bkgrd music and hit sfx(hammer sound, mole reaction sound[in collison])
 #add op screen
 #timer on screen
-#when player has x number of points draw more moles faster
+#when player has x number of points draw more moles faster or make moles disappear faster
 #moles and game on timer
-#take away points when mole is missed
 #make sure moles don't draw on eachother
 
 
@@ -83,9 +90,14 @@ while not done:
                     player_score += 1
                     print(mole_number)
                     print("Player score: ", player_score)  # calculate how many seconds
+        timer(50)
+
+
 
 
     # --- Game logic should go here
+
+
     moleCounter +=1
     if moleCounter >= NEWMOLES:
         moleCounter = 0
@@ -127,7 +139,7 @@ while not done:
 
     pygame.mouse.set_visible(0)
     if x > 550:
-        x = 550
+        x = 600
 
     if y > 350:
         y = 350
