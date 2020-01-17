@@ -18,8 +18,7 @@ screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("Whack-A-Mole")
 
-start_ticks = pygame.time.get_ticks()
-seconds = (pygame.time.get_ticks() - start_ticks) / 1000
+
 
 mole= pygame.Rect (10,10,100,143)
 mole_Image = pygame.image.load("mole3.png")
@@ -84,9 +83,7 @@ while not done:
                     player_score += 1
                     print(mole_number)
                     print("Player score: ", player_score)  # calculate how many seconds
-        if seconds > 10:  # if more than 10 seconds close the game
-            terminate()
-            print(seconds)
+
         #https://stackoverflow.com/questions/12150957/pygame-action-when-mouse-click-on-rect
 
 
@@ -117,6 +114,12 @@ while not done:
     textRectObj = textSurfaceObj.get_rect()
     textRectObj.center = (65, 32)
 
+    #drawing title on screen
+    fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
+    textSurfaceObj2 = fontObj.render("Whack-A-Mole!", True, BLACK)
+    textRectObj2 = textSurfaceObj.get_rect()
+    textRectObj2.center = (200, 32)
+
     #drawing time on screen
 
     #getting player position and hit zone
@@ -140,6 +143,7 @@ while not done:
     screen.blit(player_image, [x, y])
 
     screen.blit(textSurfaceObj, textRectObj)
+    screen.blit(textSurfaceObj2, textRectObj2)
 
 
 
