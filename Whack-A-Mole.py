@@ -18,7 +18,8 @@ screen = pygame.display.set_mode(size)
 
 pygame.display.set_caption("Whack-A-Mole")
 
-#pygame.time.get_ticks() figure out timer
+start_ticks = pygame.time.get_ticks()
+seconds = (pygame.time.get_ticks() - start_ticks) / 1000
 
 mole= pygame.Rect (10,10,100,143)
 mole_Image = pygame.image.load("mole3.png")
@@ -48,7 +49,7 @@ def terminate():
 
 
 
-#redraw moles, pick bkgrd music and hit sfx(hammer sound, molle reaction sound[in collison])
+#redraw moles, pick bkgrd music and hit sfx(hammer sound, mole reaction sound[in collison])
 #add op screen
 #timer on screen
 #when player has x number of points draw more moles faster
@@ -82,7 +83,10 @@ while not done:
                     mole_number = mole_number - 1
                     player_score += 1
                     print(mole_number)
-                    print("Player score: ", player_score)
+                    print("Player score: ", player_score)  # calculate how many seconds
+        if seconds > 10:  # if more than 10 seconds close the game
+            terminate()
+            print(seconds)
         #https://stackoverflow.com/questions/12150957/pygame-action-when-mouse-click-on-rect
 
 
