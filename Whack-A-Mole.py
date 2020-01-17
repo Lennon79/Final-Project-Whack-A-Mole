@@ -84,8 +84,6 @@ while not done:
                     print(mole_number)
                     print("Player score: ", player_score)  # calculate how many seconds
 
-        #https://stackoverflow.com/questions/12150957/pygame-action-when-mouse-click-on-rect
-
 
     # --- Game logic should go here
     moleCounter +=1
@@ -99,8 +97,6 @@ while not done:
 
     # --- Screen-clearing code goes here
 
-    # Here, we clear the screen to white. Don't put other drawing commands
-    # above this, or they will be erased with this command.
 
     # If you want a background image, replace this clear with blit'ing the
     # background image.
@@ -116,9 +112,9 @@ while not done:
 
     #drawing title on screen
     fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
-    textSurfaceObj2 = fontObj.render("Whack-A-Mole!", True, BLACK)
-    textRectObj2 = textSurfaceObj.get_rect()
-    textRectObj2.center = (200, 32)
+    textSurfaceObj2 = fontObj2.render("Whack-A-Mole!", True, BLACK)
+    textRectObj2 = textSurfaceObj2.get_rect()
+    textRectObj2.center = (350, 32)
 
     #drawing time on screen
 
