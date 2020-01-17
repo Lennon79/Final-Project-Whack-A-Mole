@@ -44,6 +44,7 @@ player_score = 0
 def terminate():
    pygame.quit()
    sys.exit()
+
 def timer(n):
     while n > 0:
         n = n - 1
@@ -90,13 +91,13 @@ while not done:
                     player_score += 1
                     print(mole_number)
                     print("Player score: ", player_score)  # calculate how many seconds
-        timer(50)
+
 
 
 
 
     # --- Game logic should go here
-
+    timer(50)
 
     moleCounter +=1
     if moleCounter >= NEWMOLES:
