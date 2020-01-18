@@ -24,8 +24,9 @@ mole= pygame.Rect (10,10,100,143)
 mole_Image = pygame.image.load("mole3.png")
 player = pygame.Rect (10,10, 172, 238)
 player_image = pygame.image.load("hammer2.png")
-#pygame.mixer.music.play(-1,0.0)
-#click_sound = pygame.mixer.Sound(" ")
+pygame.mixer.music.load("Thing_For_Itself_bkgrd.wav")
+pygame.mixer.music.play(-1,0.0)
+hit_sound = pygame.mixer.Sound("hit_sfx.wav")
 
 hit_zone = pygame.Rect(0 ,0, 35, 80)
 
@@ -45,14 +46,14 @@ def terminate():
    pygame.quit()
    sys.exit()
 
-def timer(n):
+'''def timer(n):
     while n > 0:
         n = n - 1
         print("Timer:",n)
         time.sleep(1)
     if n == 0:
         print("done")
-        terminate()
+        terminate()'''
 
 
 
@@ -85,7 +86,7 @@ while not done:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for mole in moles:
                 if mole.colliderect(hit_zone):
-                    # click_sound.play() make a noise when mole is hit
+                    hit_sound.play()
                     moles.remove(mole)
                     mole_number = mole_number - 1
                     player_score += 1
@@ -97,7 +98,7 @@ while not done:
 
 
     # --- Game logic should go here
-    timer(50)
+    #timer(50)
 
 
     '''def countdown(t):
