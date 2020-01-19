@@ -1,5 +1,5 @@
 #Lennon Hudson
-import pygame,random,sys,time
+import pygame, random, sys, time
 from pygame.locals import *
 
 
@@ -9,6 +9,33 @@ WHITE = (255, 255, 255)
 GREEN = (42, 140, 49)
 RED = (255, 0, 0)
 BLUE = (99, 147, 242)
+YELLOW = (255,255,0)
+LIGHTBLUE = (135, 206, 250)
+
+WINDOWWIDTH = 700
+WINDOWHEIGHT = 500
+
+
+def terminate():
+   pygame.quit()
+   sys.exit()
+
+##################################################################
+def waitForPlayerToPressKey():
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                terminate()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE: # pressing escape quits
+                    terminate()
+                return
+def drawText(text, font, surface, x, y, clr):
+    textobj = font.render(text, 1, clr)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x, y)
+    surface.blit(textobj, textrect)
+##################################################################
 
 pygame.init()
 
@@ -25,10 +52,24 @@ mole_Image = pygame.image.load("mole3.png")
 player = pygame.Rect (10,10, 172, 238)
 player_image = pygame.image.load("hammer2.png")
 pygame.mixer.music.load("Thing_For_Itself_bkgrd.wav")
-pygame.mixer.music.play(-1,0.0)
+pygame.mixer.music.play(-1, 0.0)
 hit_sound = pygame.mixer.Sound("hit_sfx.wav")
-
 hit_zone = pygame.Rect(0 ,0, 35, 80)
+
+moleCounter = 0
+NEWMOLES = 60
+NEWMOLES2 = 30
+player_score = 0
+
+font2 = pygame.font.SysFont(None, 48)
+
+# Used to manage how fast the screen updates
+clock = pygame.time.Clock()
+timer = 6000 #adjust to fit music?
+
+
+
+
 
 moles = []
 mole_number = 0
@@ -38,22 +79,12 @@ for i in range(5):
     print(mole_number)
 
 
-moleCounter = 0
-NEWMOLES = 60
-NEWMOLES2 = 30
-player_score = 0
-def terminate():
-   pygame.quit()
-   sys.exit()
 
-'''def timer(n):
-    while n > 0:
-        n = n - 1
-        print("Timer:",n)
-        time.sleep(1)
-    if n == 0:
-        print("done")
-        terminate()'''
+
+
+
+
+
 
 
 
@@ -62,10 +93,16 @@ def terminate():
 #add op screen
 #timer on screen
 #when player has x number of points draw more moles faster or make moles disappear faster
-#moles and game on timer
+#moles on timer
 #make sure moles don't draw on eachother
 
+# =========== Screen 1 --Intro screen
+drawText('My Amazing Game', font2, screen, (WINDOWWIDTH/3)-20, (WINDOWHEIGHT/3), LIGHTBLUE)
+drawText('Press any key to start.', font2, screen, (WINDOWWIDTH/3)-50, (WINDOWHEIGHT/3)+ 130, YELLOW)
+pygame.display.update()
+waitForPlayerToPressKey()
 
+#####################
 
 
 # Loop until the user clicks the close button.
@@ -73,6 +110,7 @@ done = False
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
+timer = 6000 #adjust to fit music?
 
 # -------- Main Program Loop -----------
 while not done:
@@ -92,23 +130,26 @@ while not done:
                     player_score += 1
                     print(mole_number)
                     print("Player score: ", player_score)  # calculate how many seconds
+    timer -= 1
+    print(timer)
+    # ============= Screen 2 -- ending screen
+    if timer <= 0:
+        screen.fill(LIGHTBLUE)
+        drawText("Your Score:" + str(player_score), font2, screen, (WINDOWWIDTH / 3) - 50, (WINDOWHEIGHT / 3), BLACK)
+        pygame.display.update()
+        waitForPlayerToPressKey()
+
+
+
 
 
 
 
 
     # --- Game logic should go here
-    #timer(50)
 
 
-    '''def countdown(t):
-        while t:
-            mins, secs = divmod(t, 60)
-            timeformat = '{:02d}:{:02d}'.format(mins, secs)
-            print(timeformat, end='\r')
-            time.sleep(1)
-            t -= 1
-        print('Goodbye!\n\n\n\n\n')'''
+
 
     moleCounter +=1
     if moleCounter >= NEWMOLES:
@@ -116,6 +157,8 @@ while not done:
         moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
         mole_number += 1
         print(mole_number)
+
+
 
 
 
@@ -141,6 +184,10 @@ while not done:
     textRectObj2.center = (350, 32)
 
     #drawing time on screen
+    fontObj3 = pygame.font.Font('freesansbold.ttf', 32)
+    textSurfaceObj3 = fontObj3.render("Time: " + str(timer), True, BLACK)
+    textRectObj3 = textSurfaceObj3.get_rect()
+    textRectObj3.center = (600, 32)
 
     #getting player position and hit zone
     player_position = pygame.mouse.get_pos()
@@ -164,6 +211,7 @@ while not done:
 
     screen.blit(textSurfaceObj, textRectObj)
     screen.blit(textSurfaceObj2, textRectObj2)
+    screen.blit(textSurfaceObj3, textRectObj3)
 
 
 
