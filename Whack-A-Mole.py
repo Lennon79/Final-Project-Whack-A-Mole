@@ -13,29 +13,37 @@ YELLOW = (255,255,0)
 LIGHTBLUE = (135, 206, 250)
 
 WINDOWWIDTH = 700
-WINDOWHEIGHT = 500
+WINDOWHEIGHT = 500#change whole game to screen
+windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), 0, 32)
+
 
 
 def terminate():
    pygame.quit()
    sys.exit()
 
-##################################################################
+
 def waitForPlayerToPressKey():
     while True:
         for event in pygame.event.get():
             if event.type == QUIT:
                 terminate()
             if event.type == KEYDOWN:
-                if event.key == K_ESCAPE: # pressing escape quits
+                if event.key == K_ESCAPE:
                     terminate()
                 return
-def drawText(text, font, surface, x, y, clr):
+
+def drawscreenbkgrd_moles(screen, x, y):
+    screen.fill(GREEN)
+    screen.blit(mole_Image,[10 + x, 20+ y])
+    screen.blit(mole_Image, [200 + x, 20 + y])
+    screen.blit(mole_Image, [390 + x, 20 + y])
+
+def drawText(text, font, screen, x, y, clr):
     textobj = font.render(text, 1, clr)
     textrect = textobj.get_rect()
     textrect.topleft = (x, y)
-    surface.blit(textobj, textrect)
-##################################################################
+    screen.blit(textobj, textrect)
 
 pygame.init()
 
@@ -64,8 +72,6 @@ player_score = 0
 font2 = pygame.font.SysFont(None, 48)
 
 # Used to manage how fast the screen updates
-clock = pygame.time.Clock()
-timer = 6000 #adjust to fit music?
 
 
 
@@ -78,31 +84,17 @@ for i in range(5):
     mole_number += 1
     print(mole_number)
 
-
-
-
-
-
-
-
-
-
-
-
-#redraw moles, pick bkgrd music and hit sfx(hammer sound, mole reaction sound[in collison])
-#add op screen
-#timer on screen
+#redraw moles(mole reaction sound[in collison]?)
+#(make timer better?)
 #when player has x number of points draw more moles faster or make moles disappear faster
 #moles on timer
-#make sure moles don't draw on eachother
 
-# =========== Screen 1 --Intro screen
-drawText('My Amazing Game', font2, screen, (WINDOWWIDTH/3)-20, (WINDOWHEIGHT/3), LIGHTBLUE)
-drawText('Press any key to start.', font2, screen, (WINDOWWIDTH/3)-50, (WINDOWHEIGHT/3)+ 130, YELLOW)
+#Screen 1 --Intro screen
+drawscreenbkgrd_moles(screen,100,400)
+drawText('Whack-A-Mole!', font2, screen, (WINDOWWIDTH/3)-20, (WINDOWHEIGHT/3), BLACK)
+drawText('Press any key to start.', font2, screen, (WINDOWWIDTH/3)-50, (WINDOWHEIGHT/3)+ 130, BLACK)
 pygame.display.update()
 waitForPlayerToPressKey()
-
-#####################
 
 
 # Loop until the user clicks the close button.
@@ -132,23 +124,16 @@ while not done:
                     print("Player score: ", player_score)  # calculate how many seconds
     timer -= 1
     print(timer)
-    # ============= Screen 2 -- ending screen
+    # Screen 2 -- Ending screen
     if timer <= 0:
-        screen.fill(LIGHTBLUE)
+        drawscreenbkgrd_moles(windowSurface, 100, 400)
         drawText("Your Score:" + str(player_score), font2, screen, (WINDOWWIDTH / 3) - 50, (WINDOWHEIGHT / 3), BLACK)
         pygame.display.update()
         waitForPlayerToPressKey()
 
 
 
-
-
-
-
-
     # --- Game logic should go here
-
-
 
 
     moleCounter +=1
