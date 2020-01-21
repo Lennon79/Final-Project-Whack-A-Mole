@@ -1,9 +1,10 @@
 #Lennon Hudson
+
 import pygame, random, sys, time
 from pygame.locals import *
 
 
-# Define some colors
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (42, 140, 49)
@@ -11,12 +12,6 @@ RED = (255, 0, 0)
 BLUE = (99, 147, 242)
 YELLOW = (255,255,0)
 LIGHTBLUE = (135, 206, 250)
-
-WINDOWWIDTH = 700
-WINDOWHEIGHT = 500#change whole game to screen
-windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), 0, 32)
-
-
 
 def terminate():
    pygame.quit()
@@ -45,6 +40,7 @@ def drawText(text, font, screen, x, y, clr):
     textrect.topleft = (x, y)
     screen.blit(textobj, textrect)
 
+
 pygame.init()
 
 # Set the width and height of the screen [width, height]
@@ -64,35 +60,34 @@ pygame.mixer.music.play(-1, 0.0)
 hit_sound = pygame.mixer.Sound("hit_sfx.wav")
 hit_zone = pygame.Rect(0 ,0, 35, 80)
 
-moleCounter = 0
+
+
+mole_counter = 0
+mole_remove = 0
 NEWMOLES = 60
-NEWMOLES2 = 30
 player_score = 0
 
 font2 = pygame.font.SysFont(None, 48)
-
-# Used to manage how fast the screen updates
-
 
 
 
 
 moles = []
-mole_number = 0
 for i in range(5):
     moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
-    mole_number += 1
-    print(mole_number)
+    print(len(moles))
 
-#redraw moles(mole reaction sound[in collison]?)
-#(make timer better?)
-#when player has x number of points draw more moles faster or make moles disappear faster
-#moles on timer
+
+#when player has x number of points draw more moles faster or make moles disappear faster(hammer up and down)
+#redrawm moles
+#fix print statemetns that aren't needed
+#remove image not needed
+
 
 #Screen 1 --Intro screen
 drawscreenbkgrd_moles(screen,100,400)
-drawText('Whack-A-Mole!', font2, screen, (WINDOWWIDTH/3)-20, (WINDOWHEIGHT/3), BLACK)
-drawText('Press any key to start.', font2, screen, (WINDOWWIDTH/3)-50, (WINDOWHEIGHT/3)+ 130, BLACK)
+drawText('Whack-A-Mole!', font2, screen, (700/3)-20, (500/3), BLACK)
+drawText('Press any key to start.', font2, screen, (700/3)-50, (500/3)+ 130, BLACK)
 pygame.display.update()
 waitForPlayerToPressKey()
 
@@ -102,7 +97,8 @@ done = False
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
-timer = 6000 #adjust to fit music?
+timer = 6000
+
 
 # -------- Main Program Loop -----------
 while not done:
@@ -118,43 +114,33 @@ while not done:
                 if mole.colliderect(hit_zone):
                     hit_sound.play()
                     moles.remove(mole)
-                    mole_number = mole_number - 1
                     player_score += 1
-                    print(mole_number)
-                    print("Player score: ", player_score)  # calculate how many seconds
+                    print("Player score: ", player_score)
     timer -= 1
     print(timer)
     # Screen 2 -- Ending screen
     if timer <= 0:
-        drawscreenbkgrd_moles(windowSurface, 100, 400)
-        drawText("Your Score:" + str(player_score), font2, screen, (WINDOWWIDTH / 3) - 50, (WINDOWHEIGHT / 3), BLACK)
+        drawscreenbkgrd_moles(screen, 100, 400)
+        drawText("Your Score: " + str(player_score), font2, screen, (700 / 3) - 50, (500 / 3), BLACK)
         pygame.display.update()
         waitForPlayerToPressKey()
 
-
-
     # --- Game logic should go here
 
-
-    moleCounter +=1
-    if moleCounter >= NEWMOLES:
-        moleCounter = 0
+    mole_counter +=2
+    if mole_counter >= NEWMOLES:
+        mole_counter = 0
         moles.append(pygame.Rect(random.randint(0, 600 - 20), random.randint(0, 367 - 20), 100, 143))
-        mole_number += 1
-        print(mole_number)
 
-
-
-
-
-    # --- Screen-clearing code goes here
-
+    mole_remove += 1
+    if mole_remove >= 120:
+        mole_remove = 0
+        moles.pop(0)
+        player_score = player_score -2
 
     # If you want a background image, replace this clear with blit'ing the
-    # background image.
-    screen.fill(GREEN)
 
-    # --- Drawing code should go here
+    screen.fill(GREEN)
 
     #drawing score on screen
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
@@ -197,8 +183,6 @@ while not done:
     screen.blit(textSurfaceObj, textRectObj)
     screen.blit(textSurfaceObj2, textRectObj2)
     screen.blit(textSurfaceObj3, textRectObj3)
-
-
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
