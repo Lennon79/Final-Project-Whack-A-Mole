@@ -50,23 +50,25 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Whack-A-Mole")
 
 
-
+#images
 mole= pygame.Rect (10,10,100,143)
 mole_Image = pygame.image.load("mole3.png")
 player = pygame.Rect (10,10, 172, 238)
 player_image = pygame.image.load("hammer2.png")
+#music
 pygame.mixer.music.load("Thing_For_Itself_bkgrd.wav")
 pygame.mixer.music.play(-1, 0.0)
 hit_sound = pygame.mixer.Sound("hit_sfx.wav")
+#hit zone
 hit_zone = pygame.Rect(0 ,0, 35, 80)
 
 
-
+#counter variables
 mole_counter = 0
 mole_remove = 0
 NEWMOLES = 60
 player_score = 0
-
+#font
 font2 = pygame.font.SysFont(None, 48)
 
 
@@ -92,10 +94,10 @@ pygame.display.update()
 waitForPlayerToPressKey()
 
 
-# Loop until the user clicks the close button.
+# Loops until the user clicks the close button.
 done = False
 
-# Used to manage how fast the screen updates
+# game timer
 clock = pygame.time.Clock()
 timer = 6000
 
@@ -118,6 +120,7 @@ while not done:
                     print("Player score: ", player_score)
     timer -= 1
     print(timer)
+
     # Screen 2 -- Ending screen
     if timer <= 0:
         drawscreenbkgrd_moles(screen, 100, 400)
@@ -125,8 +128,7 @@ while not done:
         pygame.display.update()
         waitForPlayerToPressKey()
 
-    # --- Game logic should go here
-
+    #adding and removing moles
     mole_counter +=2
     if mole_counter >= NEWMOLES:
         mole_counter = 0
@@ -138,8 +140,7 @@ while not done:
         moles.pop(0)
         player_score = player_score -2
 
-    # If you want a background image, replace this clear with blit'ing the
-
+    #filling screen
     screen.fill(GREEN)
 
     #drawing score on screen
