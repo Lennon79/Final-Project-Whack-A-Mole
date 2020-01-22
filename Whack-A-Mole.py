@@ -52,7 +52,7 @@ pygame.display.set_caption("Whack-A-Mole")
 
 # images
 mole = pygame.Rect(10, 10, 100, 143)
-mole_Image = pygame.image.load("mole3.png")
+mole_Image = pygame.image.load("Mole.png")
 player = pygame.Rect(10, 10, 172, 238)
 player_image = pygame.image.load("hammer2.png")
 
