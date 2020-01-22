@@ -53,11 +53,13 @@ pygame.display.set_caption("Whack-A-Mole")
 # images
 mole = pygame.Rect(10, 10, 100, 143)
 mole_Image = pygame.image.load("mole3.png")
-#player = pygame.Rect(10, 10, 172, 238)
-#player_image = pygame.image.load("hammer2.png")
-hammer_up = pygame.image.load("hammer_up.png")
+player = pygame.Rect(10, 10, 172, 238)
+player_image = pygame.image.load("hammer2.png")
+
+'''hammer_up = pygame.image.load("hammer_up.png")
 hammer_down = pygame.image.load("hammer_down.png")
-hammer_down_rect = pygame.Rect(10, 10, 238, 172)
+hammer_down_rect = pygame.Rect(10, 10, 238, 172)'''
+
 # music
 pygame.mixer.music.load("Thing_For_Itself_bkgrd.wav")
 pygame.mixer.music.play(-1, 0.0)
@@ -96,21 +98,15 @@ waitForPlayerToPressKey()
 
 # Loops until the user clicks the close button.
 done = False
+mole_hit = False
 
 # game timer
 clock = pygame.time.Clock()
 timer = 6000
 
 
-
-
 # -------- Main Program Loop -----------
 while not done:
-    player_position = pygame.mouse.get_pos()
-    x = player_position[0]
-    y = player_position[1]
-    hit_zone.x = x
-    hit_zone.y = y + 65
     # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -118,11 +114,7 @@ while not done:
         if event.type == pygame.KEYDOWN:
             if event.key == K_ESCAPE:
                 terminate()
-        if event.type == pygame.MOUSEBUTTONUP:
-            print("yo")
-            screen.blit(hammer_up, [x, y])
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            screen.blit(hammer_down, [x, y])
             for mole in moles:
                 if mole.colliderect(hit_zone):
                     hit_sound.play()
@@ -171,11 +163,11 @@ while not done:
     textRectObj3.center = (600, 32)
 
     # getting player position and hit zone
-    '''player_position = pygame.mouse.get_pos()
+    player_position = pygame.mouse.get_pos()
     x = player_position[0]
     y = player_position[1]
     hit_zone.x = x
-    hit_zone.y = y + 65'''
+    hit_zone.y = y + 65
 
     pygame.mouse.set_visible(0)
     if x > 550:
@@ -188,7 +180,7 @@ while not done:
     for mole in moles:
         screen.blit(mole_Image, mole)
 
-    #screen.blit(hammer_up, [x, y])
+    screen.blit(player_image, [x, y])
 
     screen.blit(textSurfaceObj, textRectObj)
     screen.blit(textSurfaceObj2, textRectObj2)
